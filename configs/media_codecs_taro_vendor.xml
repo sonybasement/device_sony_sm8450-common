@@ -107,6 +107,8 @@
     <Include href="media_codecs_vendor_audio.xml" />
     <Include href="media_codecs_google_telephony.xml" />
     <Include href="media_codecs_c2_audio.xml" />
+    <Include href="media_codecs_sony_c2_audio.xml" />
+    <Include href="media_codecs_dolby_audio.xml" />
     <Settings>
         <Setting name="max-video-encoder-input-buffers" value="11" />
     </Settings>
@@ -123,7 +125,6 @@
             <Limit name="frame-rate" range="1-960" />
             <Limit name="concurrent-instances" max="16" />
             <Feature name="adaptive-playback" />
-            <Limit name="concurrent-instances" max="16" />
             <Limit name="performance-point-1280x720" value="960" />
             <Limit name="performance-point-1920x1080" value="480" />
             <Limit name="performance-point-3840x2160" value="240" />
@@ -142,7 +143,6 @@
             <Limit name="concurrent-instances" max="16" />
             <Feature name="adaptive-playback" />
             <Feature name="low-latency" />
-            <Limit name="concurrent-instances" max="16" />
             <Limit name="performance-point-1280x720" value="480" />
             <Limit name="performance-point-1920x1080" value="240" />
             <Limit name="performance-point-3840x2160" value="120" />
@@ -161,7 +161,6 @@
             <Feature name="adaptive-playback" />
             <Feature name="secure-playback" required="true" />
             <Feature name="low-latency" />
-            <Limit name="concurrent-instances" max="3" />
             <Limit name="concurrent-instances" max="3" />
             <Limit name="performance-point-3840x2160" value="60" />
             <Limit name="performance-point-4096x2304" value="60" />
@@ -227,7 +226,22 @@
             <Limit name="bitrate" range="1-100000000" />
             <Limit name="frame-rate" range="1-60" />
             <Feature name="adaptive-playback" />
-            <Limit name="concurrent-instances" max="3" />
+            <Limit name="concurrent-instances" max="6" />
+            <Limit name="performance-point-3840x2160" value="60" />
+            <Limit name="performance-point-4096x2304" value="60" />
+        </MediaCodec>
+        <MediaCodec name="c2.qti.vp9.decoder.low_latency" type="video/x-vnd.on2.vp9" >
+            <Alias name="OMX.qcom.video.decoder.vp9.low_latency"/>
+            <Limit name="size" min="96x96" max="4096x4096" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="block-count" range="36-36864" />
+            <Limit name="blocks-per-second" min="36" max="2211840" />
+            <Limit name="bitrate" range="1-30000000" />
+            <Limit name="frame-rate" range="1-60" />
+            <Feature name="adaptive-playback" />
+            <Feature name="low-latency" />
+            <Limit name="concurrent-instances" max="6" />
             <Limit name="performance-point-3840x2160" value="60" />
             <Limit name="performance-point-4096x2304" value="60" />
         </MediaCodec>
@@ -242,22 +256,10 @@
             <Limit name="frame-rate" range="1-60" />
             <Feature name="adaptive-playback" />
             <Feature name="secure-playback" required="true" />
+            <Feature name="low-latency" />
             <Limit name="concurrent-instances" max="3" />
             <Limit name="performance-point-3840x2160" value="60" />
             <Limit name="performance-point-4096x2304" value="60" />
-        </MediaCodec>
-        <MediaCodec name="c2.qti.mpeg2.decoder" type="video/mpeg2" >
-            <Alias name="OMX.qcom.video.decoder.mpeg2"/>
-            <Limit name="size" min="96x96" max="1920x1920" />
-            <Limit name="alignment" value="2x2" />
-            <Limit name="block-size" value="16x16" />
-            <Limit name="block-count" range="36-8160" />
-            <Limit name="blocks-per-second" min="36" max="244800" />
-            <Limit name="bitrate" range="1-40000000" />
-            <Limit name="frame-rate" range="1-30" />
-            <Feature name="adaptive-playback" />
-            <Limit name="concurrent-instances" max="16" />
-            <Limit name="performance-point-1920x1080" value="30" />
         </MediaCodec>
     </Decoders>
     <Encoders>
@@ -275,6 +277,7 @@
             <Limit name="concurrent-instances" max="16" />
             <Feature name="bitrate-modes" value="VBR,CBR" />
             <Feature name="intra-refresh" />
+            <Feature name="video-minimum-quality" />
             <Limit name="performance-point-1280x720" value="960" />
             <Limit name="performance-point-1920x1080" value="480" />
             <Limit name="performance-point-1920x1080" value="240" />
@@ -294,6 +297,7 @@
             <Limit name="concurrent-instances" max="16" />
             <Feature name="bitrate-modes" value="VBR,CBR" />
             <Feature name="intra-refresh" />
+            <Feature name="video-minimum-quality" />
             <Limit name="performance-point-1280x720" value="960" />
             <Limit name="performance-point-1920x1080" value="480" />
             <Limit name="performance-point-1920x1080" value="240" />
@@ -308,7 +312,6 @@
             <Limit name="blocks-per-second" min="64" max="3916800" />
             <Limit name="bitrate" range="1-160000000" />
             <Limit name="frame-rate" range="1-480" />
-            <Limit name="complexity" range="0-100"  default="100" />
             <Limit name="concurrent-instances" max="16" />
             <Limit name="quality" range="0-100" default="80" />
             <Feature name="bitrate-modes" value="CQ" />
@@ -322,7 +325,6 @@
             <Limit name="blocks-per-second" min="64" max="3916800" />
             <Limit name="bitrate" range="1-160000000" />
             <Limit name="frame-rate" range="1-20" />
-            <Limit name="complexity" range="0-100"  default="100" />
             <Limit name="concurrent-instances" max="16" />
             <Limit name="quality" range="0-100" default="80" />
             <Feature name="bitrate-modes" value="CQ" />

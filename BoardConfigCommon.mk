@@ -15,13 +15,11 @@
 #
 
 BUILD_BROKEN_DUP_RULES := true
-
-BUILD_BROKEN_ENFORCE_SYSPROP_OWNER := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
 BOARD_VENDOR := sony
 
-COMMON_PATH := device/sony/sm8350-common
+COMMON_PATH := device/sony/sm8450-common
 
 # A/B
 AB_OTA_UPDATER := true
@@ -29,53 +27,51 @@ AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
     boot \
     dtbo \
+    odm \
     product \
+    recovery \
     system \
     system_ext \
     vbmeta \
     vbmeta_system \
-    odm \
     vendor \
-    vendor_dlkm \
-    vendor_boot
+    vendor_boot \
+    vendor_dlkm
 
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-2a-dotprod
+TARGET_ARCH_VARIANT := armv8-a-branchprot
 TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_VARIANT := cortex-a76
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := kryo300
 
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-a
+TARGET_2ND_ARCH_VARIANT := armv8-2a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a76
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a75
 
 TARGET_USES_64_BIT_BINDER := true
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := lahaina
+TARGET_BOOTLOADER_BOARD_NAME := taro
 TARGET_NO_BOOTLOADER := true
 
 # Kernel
-BOARD_BOOT_HEADER_VERSION := 3
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_USES_GENERIC_KERNEL_IMAGE := true
+
 BOARD_KERNEL_CMDLINE := \
-    console=ttyMSM0,115200n8 \
-    androidboot.hardware=qcom \
-    androidboot.console=ttyMSM0 \
-    androidboot.memcg=1 \
-    lpm_levels.sleep_disabled=1 \
     video=vfb:640x400,bpp=32,memsize=3072000 \
-    msm_rtb.filter=0x237 \
-    service_locator.enable=1 \
-    androidboot.usbcontroller=a600000.dwc3 \
-    swiotlb=0 \
-    loop.max_part=7 \
-    cgroup.memory=nokmem,nosocket \
-    pcie_ports=compat \
-    loop.max_part=7 \
-    iptable_raw.raw_before_defrag=1 \
-    ip6table_raw.raw_before_defrag=1
+    buildid=NAGARA-2.1.0-REL-221213-1834 \
+    androidboot.selinux=permissive
+
+BOARD_BOOTCONFIG := \
+    androidboot.hardware=qcom \
+    androidboot.memcg=1 \
+    androidboot.usbcontroller=a600000.dwc3
 
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
@@ -86,8 +82,20 @@ BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_DTB_OFFSET           := 0x01f00000
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_RAMDISK_USE_LZ4 := true
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_NO_GCC := true
+
+TARGET_KERNEL_SOURCE := kernel/sony/sm8450
+TARGET_KERNEL_CONFIG := \
+	gki_defconfig \
+	vendor/waipio_GKI.config
+
+# Use External DTC
+TARGET_KERNEL_ADDITIONAL_FLAGS := \
+    DTC_EXT=$(shell pwd)/kernel/prebuilts/build-tools/linux-x86/bin/dtc \
+    DTC_OVERLAY_TEST_EXT=$(shell pwd)/kernel/prebuilts/build-tools/linux-x86/bin/ufdt_apply_overlay \
+    LLVM=1 LLVM_IAS=1
 
 # Kernel modules
 BOARD_VENDOR_KERNEL_MODULES_BLOCKLIST_FILE := $(COMMON_PATH)/modules.blocklist
@@ -96,16 +104,8 @@ BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(COMMO
 BOOT_KERNEL_MODULES := $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD)
 TARGET_MODULE_ALIASES += wlan.ko:qca_cld3_wlan.ko
 
-# Use External DTC
-TARGET_KERNEL_ADDITIONAL_FLAGS := \
-    DTC_EXT=$(shell pwd)/prebuilts/misc/linux-x86/dtc/dtc \
-    DTC_OVERLAY_TEST_EXT=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/libufdt/ufdt_apply_overlay \
-    LLVM=1 LLVM_IAS=1
-
 # Platform
-TARGET_BOARD_PLATFORM := lahaina
-
-# Qcom
+TARGET_BOARD_PLATFORM := taro
 BOARD_USES_QCOM_HARDWARE := true
 
 # ANT+
@@ -115,44 +115,26 @@ BOARD_ANT_WIRELESS_DEVICE := "qualcomm-hidl"
 AUDIO_FEATURE_ENABLED_MULTI_VOICE_SESSIONS := true
 AUDIO_FEATURE_ENABLED_EXT_AMPLIFIER := true
 
-AUDIO_FEATURE_ENABLED_AHAL_EXT := false
-AUDIO_FEATURE_ENABLED_VBAT_MONITOR := true
-AUDIO_FEATURE_ENABLED_RAS := true
-AUDIO_FEATURE_ENABLED_GKI := true
-AUDIO_FEATURE_ENABLED_ANC_HEADSET := true
-AUDIO_FEATURE_ENABLED_INCALL_MUSIC := true
-AUDIO_FEATURE_ENABLED_KPI_OPTIMIZE := true
-AUDIO_FEATURE_ENABLED_SPKR_PROTECTION := true
-AUDIO_FEATURE_ENABLED_DEV_ARBI := false
-AUDIO_FEATURE_ENABLED_SOURCE_TRACKING := true
 AUDIO_FEATURE_ENABLED_DLKM := true
-AUDIO_FEATURE_ENABLED_DS2_DOLBY_DAP := false
 AUDIO_FEATURE_ENABLED_DTS_EAGLE := false
-AUDIO_FEATURE_ENABLED_EXTENDED_COMPRESS_FORMAT := true
 AUDIO_FEATURE_ENABLED_GEF_SUPPORT := true
 AUDIO_FEATURE_ENABLED_HW_ACCELERATED_EFFECTS := false
 AUDIO_FEATURE_ENABLED_INSTANCE_ID := true
+AUDIO_FEATURE_ENABLED_LSM_HIDL := true
+AUDIO_FEATURE_ENABLED_PAL_HIDL := true
 AUDIO_FEATURE_ENABLED_PROXY_DEVICE := true
-AUDIO_FEATURE_ENABLED_SSR := true
-AUDIO_FEATURE_ENABLED_FLUENCE := true
+AUDIO_FEATURE_SONY_CIRRUS := true
 BOARD_SUPPORTS_SOUND_TRIGGER := true
 BOARD_USES_ALSA_AUDIO := true
-AUDIO_FEATURE_SONY_CIRRUS := true
-AUDIO_FEATURE_ENABLED_SND_MONITOR := true
-AUDIO_FEATURE_ENABLED_HDMI_EDID := true
-AUDIO_FEATURE_ENABLED_HDMI_PASSTHROUGH := true
-AUDIO_FEATURE_ENABLED_DISPLAY_PORT := true
-AUDIO_FEATURE_ENABLED_USB_BURST_MODE := true
+TARGET_USES_QCOM_MM_AUDIO := true
 USE_CUSTOM_AUDIO_POLICY := 1
-USE_XML_AUDIO_POLICY_CONF := 1
-
-BOARD_SUPPORTS_OPENSOURCE_STHAL := true
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(COMMON_PATH)/bluetooth
 
 # Display
 TARGET_NO_RAW10_CUSTOM_FORMAT := true
+TARGET_GRALLOC_HANDLE_HAS_RESERVED_SIZE := true
 MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_USES_EGL_DISPLAY_ARRAY := true
@@ -188,6 +170,7 @@ BOARD_USES_METADATA_PARTITION := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x06000000
 BOARD_DTBOIMG_PARTITION_SIZE := 25165824
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 0x06000000
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x6400000
 # Reserve space for data encryption (109553123000-16384)
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 235769556992
 ifneq ($(WITH_GMS),true)
@@ -227,8 +210,8 @@ TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
 TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/system_ext.prop
 
 # Recovery
+BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -238,19 +221,19 @@ TARGET_USERIMAGES_USE_F2FS := true
 ENABLE_VENDOR_RIL_SERVICE := true
 
 # Security patch level
-VENDOR_SECURITY_PATCH := 2022-06-01
+VENDOR_SECURITY_PATCH := 2023-02-01
 
 # Telephony
 TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 
 # Sepolicy
 include device/qcom/sepolicy_vndr-legacy-um/SEPolicy.mk
-include hardware/sony/sepolicy/qti/SEPolicy.mk
 BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
 PRODUCT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
+BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
@@ -278,4 +261,4 @@ WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 
--include vendor/sony/sm8350-common/BoardConfigVendor.mk
+-include vendor/sony/sm8450-common/BoardConfigVendor.mk

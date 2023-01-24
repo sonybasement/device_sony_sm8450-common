@@ -1,10 +1,7 @@
-# Copyright (c) 2020 Sony Mobile Communications Inc.
+# Copyright 2021 Sony Corporation
 #
 # product common configuration
 #
-on early-init
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules/ p73 sn1x0
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules/5.4-gki p73 sn1x0
 
 on boot
     # NFC local data and storage

@@ -1,7 +1,7 @@
 #!/vendor/bin/sh
 
 MSIM_DEVICES=(
-    xq-bc52 xq-bc72 # Dual-SIM version
+    xq-ct44 xq-ct54 xq-ct62 xq-ct72 # Dual-SIM version
 )
 MSIM_DEVICE=0
 
@@ -17,9 +17,9 @@ if [[ "${MSIM_DEVICE}" -eq 1 ]]; then
     setprop vendor.radio.multisim.config dsds
 fi
 
-if [[ $model == "xq-bc52" ]]; then
-    setprop ro.vendor.product.rf.id PDX215-A2
+if [[ $model == "xq-ct72" ]]; then
+    setprop ro.vendor.product.rf.id PDX223-C2
 else
-    setprop ro.vendor.product.rf.id PDX215-C2
+    setprop ro.vendor.product.rf.id PDX223-A2
 fi
 
