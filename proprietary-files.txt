@@ -85,6 +85,22 @@ vendor/lib/rfsa/adsp/libworker_pool.so
 system_ext/lib/com.qualcomm.qti.ant@1.0.so
 system_ext/lib64/com.qualcomm.qti.ant@1.0.so
 
+# Audio
+vendor/lib/hw/audio.primary.taro.so
+-vendor/lib/libar-gsl.so
+-vendor/lib/libar-pal.so
+-vendor/lib/liblx-osal.so
+-vendor/lib64/libar-gsl.so
+-vendor/lib64/libar-pal.so
+-vendor/lib64/liblx-osal.so
+
+# Audio (AGM)
+vendor/lib/libagmclient.so
+-vendor/lib/vendor.qti.hardware.AGMIPC@1.0-impl.so
+vendor/lib64/libagmclient.so
+-vendor/lib64/libagm.so
+-vendor/lib64/vendor.qti.hardware.AGMIPC@1.0-impl.so
+
 # Audio Extensions
 vendor/lib64/libsonydseehxwrapper.so
 vendor/lib/libsonydseehxwrapper.so
