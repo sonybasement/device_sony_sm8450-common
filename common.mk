@@ -217,6 +217,10 @@ PRODUCT_PACKAGES += \
 # Common init scripts
 PRODUCT_PACKAGES += \
     init.class_main.sh \
+    init.kernel.post_boot-cape \
+    init.kernel.post_boot-diwali \
+    init.kernel.post_boot-taro \
+    init.kernel.post_boot \
     init.qcom.class_core.sh \
     init.qcom.early_boot.sh \
     init.qcom.msim.sh \

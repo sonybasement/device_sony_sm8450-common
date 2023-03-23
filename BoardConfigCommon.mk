@@ -96,6 +96,7 @@ TARGET_MODULE_ALIASES += wlan.ko:qca_cld3_wlan.ko
 
 # Platform
 TARGET_BOARD_PLATFORM := taro
+TARGET_NO_BOOTLOADER := true
 BOARD_USES_QCOM_HARDWARE := true
 
 # ANT+
@@ -141,10 +142,6 @@ TARGET_USES_GRALLOC1 := true
 TARGET_USES_GRALLOC4 := true
 TARGET_USES_HWC2 := true
 TARGET_USES_ION := true
-
-SOONG_CONFIG_qtidisplay += \
-    gralloc_handle_has_reserved_size
-SOONG_CONFIG_qtidisplay_gralloc_handle_has_reserved_size := true
 
 # DRM
 TARGET_ENABLE_MEDIADRM_64 := true

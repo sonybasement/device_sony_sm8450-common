@@ -1,6 +1,7 @@
 #! /vendor/bin/sh
 
 # Copyright (c) 2012-2013,2016,2018-2020 The Linux Foundation. All rights reserved.
+# Copyright 2021 Sony Corporation
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -308,10 +309,10 @@ case "$target" in
                 ;;
         esac
         ;;
-    "lahaina")
+    "kona")
         case "$soc_hwplatform" in
             *)
-                setprop vendor.media.target_variant "_lahaina"
+                setprop vendor.media.target_variant "_kona"
                 if [ $fb_width -le 1600 ]; then
                     setprop vendor.display.lcd_density 560
                 else
@@ -342,6 +343,9 @@ case "$target" in
             441)
                 setprop vendor.fastrpc.disable.cdsprpcd.daemon 1
                 setprop vendor.gralloc.disable_ubwc 1
+
+                # 196609 is decimal for 0x30001 to report version 3.1
+                setprop vendor.opengles.version 196609
                 ;;
             471)
                 #scuba APQ
@@ -394,22 +398,6 @@ case "$target" in
                 ;;
         esac
         ;;
-    "lahaina")
-        case "$soc_hwid" in
-            450)
-                setprop vendor.media.target_variant "_shima_v3"
-                sku_ver=`cat /sys/devices/platform/soc/aa00000.qcom,vidc/sku_version` 2> /dev/null
-                if [ $sku_ver -eq 1 ]; then
-                    setprop vendor.media.target_variant "_shima_v1"
-                elif [ $sku_ver -eq 2 ]; then
-                    setprop vendor.media.target_variant "_shima_v2"
-                fi
-                ;;
-            *)
-                setprop vendor.media.target_variant "_lahaina"
-                ;;
-        esac
-        ;;
     "holi")
         setprop vendor.media.target_variant "_holi"
         ;;
@@ -424,6 +412,16 @@ case "$baseband" in
         setprop persist.vendor.radio.atfwd.start true;;
 esac
 
+#For wifi driver
+default_ini=/vendor/etc/wifi/WCNSS_qcom_cfg.ini
+customized_ini=/mnt/vendor/persist/wifi/WCNSS_qcom_cfg.ini
+cat $default_ini > $customized_ini
+gWifi6eCCList=`getprop ro.vendor.sony.wlan.6e_cc_list`
+if [ $gWifi6eCCList ]; then
+    sed -i '$a'gWifi6eCCList=''''$gWifi6eCCList'''' $customized_ini
+fi
+sed -i '$aEND' $customized_ini
+
 #set default lcd density
 #Since lcd density has read only
 #property, it will not overwrite previous set
@@ -432,7 +430,7 @@ set_density_by_fb
 
 
 # set Lilliput LCD density for ADP
-product=`getprop ro.build.product`
+product=`getprop ro.board.platform`
 
 case "$product" in
         "msmnile_au")

@@ -1,7 +1,7 @@
 #! /vendor/bin/sh
 
 # Copyright (c) 2009-2016, The Linux Foundation. All rights reserved.
-# Copyright (C) 2018 Sony Mobile Communications Inc#
+# Copyright 2021 Sony Corporation#
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -104,7 +104,7 @@ start_msm_irqbalance_msmnile()
          fi
 }
 
-start_msm_irqbalance_lahaina()
+start_msm_irqbalance_kona()
 {
          if [ -f /vendor/bin/msm_irqbalance ]; then
                 start vendor.msm_irqbalance
@@ -323,8 +323,8 @@ case "$target" in
     "msmnile")
         start_msm_irqbalance_msmnile
         ;;
-    "lahaina")
-        start_msm_irqbalance_lahaina
+    "kona")
+        start_msm_irqbalance_kona
         ;;
     "lito")
         start_msm_irqbalance_lito
