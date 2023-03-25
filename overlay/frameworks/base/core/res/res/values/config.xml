@@ -500,5 +500,17 @@
 
     <!-- Is the device capable of hot swapping an UICC Card -->
     <bool name="config_hotswapCapable">true</bool>
+
+    <string-array name="config_telephonyEuiccDeviceCapabilities">
+        <item>gsm,9</item>
+        <item>utran,9</item>
+        <item>eutran,15</item>
+        <item>nrepc,15</item>
+        <item>nr5gc,15</item>
+        <item>eutran5gc,15</item>
+    </string-array>
+   <integer-array name="non_removable_euicc_slots">
+       <item>1</item>
+    </integer-array>
 </resources>
 
